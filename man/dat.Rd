@@ -3,17 +3,29 @@
 \docType{data}
 \name{dat}
 \alias{dat}
-\title{dat}
+\title{A typical bioequivalence (BE) study data}
 \format{
-A data frame with 176 observations on 6 variables.
+A data frame with 176 observations (for 44 subjects) on 6 variables:
+\describe{
+  \item{subject}{subject ID}
+  \item{sequence}{RTRT or TRTR, T and R for test and reference drugs, respectively}
+  \item{period}{1 to 4 for cross-over period}
+  \item{formula}{T or R for test and reference drug names}
+  \item{AUC}{a pharmacokinetic parameter-the area under the blood/plasma concentration-time curve}
+  \item{CMAX}{a pharmacokinetic parameter-the peak concentration}
+}
+}
+\source{
+Patterson S and Jones B, Bioequivalence and Statistics in Clinical Pharmacology. Chapman Hall/CRC press: Boca London and New York, 2005
 }
 \usage{
 data(dat, package = 'BElikelihood')
 }
 \description{
-Describe example data.
+The dataset is a typical bioequivalence data from a full repicate 2x4 cross-over design with RTRT and TRTR as sequences. 
+It is a subset of Example 4.4 in Chapter 4 of Patterson and Jones's book with some modifications and missing data.
 }
 \examples{
 data(dat)
 }
-\keyword{datasets}
+\keyword{dataset}

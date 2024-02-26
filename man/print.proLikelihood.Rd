@@ -12,10 +12,11 @@
 \item{\dots}{unused}
 }
 \value{
-return \sQuote{x} invisibly
+Output the mean difference, total standard deviation ratio or within-subject standard deviation ratio values (depending on the \SQuote{method}) with 
+the calculated corresponding profile likelihood values.
 }
 \description{
-Print \sQuote{poi} and \sQuote{maxLik} elements from a proLikelihood object.
+Print \sQuote{poi} (mean difference, total standard deviation ratio or within-subject standard deviation ratio) and \sQuote{maxLik} (corresponding profile likelihood) elements from a proLikelihood object.
 }
 \examples{
 \donttest{

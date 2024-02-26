@@ -1,11 +1,12 @@
 #' Print method for proLikelihood object
 #'
-#' Print \sQuote{poi} and \sQuote{maxLik} elements from a proLikelihood object.
+#' Print \sQuote{poi} (mean difference, total standard deviation ratio or within-subject standard deviation ratio) and \sQuote{maxLik} (corresponding profile likelihood) elements from a proLikelihood object.
 #'
 #' @param x proLikelihood object
 #' @param \dots unused
 #'
-#' @return return \sQuote{x} invisibly
+#' @return Output the mean difference, total standard deviation ratio or within-subject standard deviation ratio values (depending on the \SQuote{method}) with 
+#' the calculated corresponding profile likelihood values.
 #'
 #' @examples
 #' \donttest{
@@ -24,17 +25,20 @@ print.proLikelihood <- function(x, ...) {
 
 #' Plot method for proLikelihood object
 #'
-#' function summary
+#' This function generates a plot of standardized profile likelihood after running the proLikelihood() function.
 #'
-#' function details
+#' The plot is a standardized profile likelihood (profile likelihood relative to the maximum) with the maximum likelihood estimate and 1/8 and 1/32 
+#' likelihood intervals for the parameter of interest (mean difference, total standard deviation ratio or within-subject standard deviation ratio depending on the \SQuote{method}) 
+#' printed inside the plot.
 #'
 #' @param x proLikelihood object
-#' @param textx numeric value position of label
-#' @param texty numeric value position of label
-#' @param textsize numeric value text size of label
+#' @param textx numeric value, position (x-axis) of label for the maximum likelihood estimate and the 1/8 and 1/32 likelihood intervals. 
+#' @param texty numeric value, position (y-axis) of label the maximum likelihood estimate and the 1/8 and 1/32 likelihood intervals. 
+#' @param textsize numeric value text size of the label.
 #' @param \dots unused
 #'
-#' @return ggplot2 object
+#' @return ggplot2 object,a plot of standardized profile likelihood with the maximum likelihood estimate and 1/8 and 1/32 
+#' Likelihood intervals printed inside the plot.
 #'
 #' @examples
 #' \donttest{

@@ -4,9 +4,10 @@
 \name{BElikelihood-package}
 \alias{BElikelihood}
 \alias{BElikelihood-package}
-\title{Bioequivalence Likelihood}
+\title{Likelihood method for analyzing Bioequivalence}
 \description{
-need description
+This package will calculate and plot the profile likelihoods for the mean difference and standard deviation ratios of a test drug to a reference drug for
+AUC or Cmax from a full replicate 2x4 (RTRT/TRTR) cross-over, 2x3 partial replicate (TRT/RTR) cross-over, or a 2x2 (RT/TR) cross-over design (where R and T for reference and test drugs, respectively).
 }
 \author{
 \strong{Maintainer}: Liping Du \email{liping.du@vumc.org}

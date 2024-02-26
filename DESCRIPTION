@@ -13,9 +13,17 @@ Authors@R:
     person("Cole", "Beck", role = "aut",
            email = "cole.beck@vumc.org",
            comment = c(ORCID = "0000-0002-6849-6255")))
-Description: Add several sentences describing the package.
+Description: This package implement the likelihood method for evaluating bioequivalence in the pharmacokinetic parameters (AUC and Cmax). The functions in this package accept 
+    bioequivalece data (AUC and Cmax) from a full replicate 2x4 (RTRT/TRTR), 2x3 partial replicate (TRT/RTR), or a 2x2 (RT/TR) design (where R and T for reference and test drugs, 
+    respectively). They will calculate the profile likelihoods for the mean difference, total standard deviation ratio, and within subject standard deviation ratio. Plots of standardized profile 
+    likelihood (as shown in Figures 2 and 3 in the reference) can be generated and provide evidence for average bioequicalence (ABE),  population bioequivalence (PBE) 
+    and individual bioequivalence (IBE) in a unified framework. 
 License: GPL (>=3)
 Imports: ggplot2, mvtnorm
-Suggests: nlme
-RoxygenNote: 7.2.3
+Suggests: 
+    knitr,
+    nlme,
+    rmarkdown
+RoxygenNote: 7.3.1
 Depends: R (>= 3.5.0)
+VignetteBuilder: knitr

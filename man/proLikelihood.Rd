@@ -2,7 +2,7 @@
 % Please edit documentation in R/proLikelihood.R
 \name{proLikelihood}
 \alias{proLikelihood}
-\title{Run profile likelihood}
+\title{Calculate profile likelihood for bioequivalence data}
 \usage{
 proLikelihood(
   dat,
@@ -15,32 +15,57 @@ proLikelihood(
 )
 }
 \arguments{
-\item{dat}{data.frame}
+\item{dat}{data frame contains bioequivalence data (AUC and Cmax) with missing data allowed.}
 
-\item{colSpec}{a named list that should specify columns in data; \sQuote{subject},
-\sQuote{formula}, and \sQuote{y} are required. \sQuote{period} and \sQuote{seq}
+\item{colSpec}{a named list that should specify columns in \sQuote{dat}; \sQuote{subject} (subject ID),
+\sQuote{formula} (coded as T or R, T for test drug and R for reference drug), and \sQuote{y} (either AUC or Cmax) are required. \sQuote{period} and \sQuote{seq}
 may also be provided. The \sQuote{formula} column should identify treatment with R/T.}
 
-\item{theta}{numeric vector DESCRIBE}
+\item{theta}{An optional numeric vector contains initial values of the parameters for use in optimization.
+For example, in a 2x4 full replicate design, the vector is [mu, p2, p3, p4, S, phi,log(sbt2), log(sbr2), log(swt2), log(sbr2), rho]. \sQuote{mu}, the population mean for
+ the reference drug when there are no period or sequence effects; \sQuote{p2} to \sQuote{p4}, fixed period effects, the 
+ reference period is period 1; \sQuote{S}, the fixed sequence effect; \sQuote{phi}, 
+ the mean difference between the two drugs; \sQuote{sbt2} and \sQuote{sbr2}, between-subject variances for the test and 
+ reference drugs; \sQuote{swt2} and \sQuote{swr2}, within-subject variances for the test and reference drugs; \sQuote{rho}, the 
+ correlation coefficient within a subject. When \sQuote{theta} is not provided, the function 
+ will choose the starting values automatically based on a linear mixed-effects model. If a user would like to
+ provide these values, for method \sQuote{average} (mean difference), user may put any value for \sQuote{phi}. Similarly, for method \sQuote{total}, user can put any value 
+ for \sQuote{log(sbt2)}, and for method \sQuote{within}, user can put any value for \sQuote{log(swt2)}.}
 
-\item{xlow}{numeric value DESCRIBE}
+\item{xlow}{numeric value, the lower limit of x-axis for the profile likelihood plot depending on the \sQuote{method}, at which profile likelihood is calculated.It is optional and can 
+be automatically generated using the MLE estimate.}
 
-\item{xup}{numeric value DESCRIBE}
+\item{xup}{numeric value,the upper limit of x-axis for the the profile likelihood plot depending on the \sQuote{method}, at which profile likelihood is calculated.It is optional and can 
+be automatically generated using the maximum likelihood estimate.}
 
-\item{xlength}{numeric value Defaults to 100; DESCRIBE}
+\item{xlength}{numeric value. Defaults to 100. It is the number of grids between the lower and upper limits,which control the smoothness of the curve.
+It will take longer time to run for larger number of grids.}
 
-\item{method}{character value Should be one of \sQuote{average}, \sQuote{total},
-or \sQuote{within}. DESCRIBE}
+\item{method}{character value. Should be one of \sQuote{average}, \sQuote{total},
+or \sQuote{within}. \sQuote{average} will provide the profile likelihoods for the mean difference between test and reference drugs.
+ \sQuote{total} will provide the profile likelihoods for the total standard deviation ratio of test to reference drug.  \sQuote{within} 
+ will provide the profile likelihood for the within subject standard deviation ratio of test to reference drug when appropriate.}
 }
 \value{
 A \sQuote{proLikelihood} object, with elements \sQuote{poi},
-\sQuote{maxLik}, \sQuote{MAX}, \sQuote{LI}, and \sQuote{method}.
+\sQuote{maxLik}, \sQuote{MAX}, \sQuote{LI}, and \sQuote{method}. \sQuote{poi}
+and \sQuote{maxLik} are the parameter (mean difference, total standard deviation ratio 
+or within subject standard deviation ratio) values and the corresponding profile likelihood values. \sQuote{MAX} is the MLE estimate for that parameter. 
+ \sQuote{LI} is the likelihood intervals with 1/4.5, 1/8 and 1/32 intervals are provided. \sQuote{method} is one of \sQuote{average},\sQuote{total} and \sQuote{within}.
 }
 \description{
-function summary
+This is a general function to calculate the profile likelihoods for the mean difference, total 
+standard deviation ratio, and within subject standard deviation ratio of a test to reference drug from bioequvalence study data (AUC and Cmax). 
+Standardized profile likelihood plots with the 1/8 and 1/32 likelihood intervals can be generated
+using the plot method.The within-subject standard deviation ratio is only for a full replicate 2x4 or a partial replicate 2x3 design.
 }
 \details{
-function details
+This function implement the likelihood method for evaluating bioequivalence in the pharmacokinetic parameters (AUC and Cmax) (see reference below). It accepts 
+a dataframe with bioequivalece study data from a full replicate 2x4 (RTRT/TRTR), 2x3 partial replicate (TRT/RTR), or a simple 2x2 (RT/TR) design (where R and T for reference and test drugs, 
+respectively).It allows missing data (for example, a subject may miss the period 2 data) and utilize all available data. It will calculate the profile likelihoods for the mean difference, 
+total standard deviation ratio, and within-subject standard deviation ratio. Plots of standardized profile 
+likelihood (as shown in Figures 2 and 3 in the reference) can be generated and provide evidence for average bioequicalence (ABE),  population bioequivalence (PBE) 
+and individual bioequivalence (IBE) in a unified framework.
 }
 \examples{
 \donttest{
@@ -60,4 +85,7 @@ p2a <- proLikelihood(dd2, colSpec = cols, xlength = 300, method = 'average')
 p2t <- proLikelihood(dd2, colSpec = cols, xlength = 300, method = 'total')
 }
 
+}
+\references{
+Liping Du and Leena Choi, Likelihood approach for evaluating bioequivalence of highly variable drugs, Pharmaceutical Statistics, 14(2): 82-94, 2015
 }

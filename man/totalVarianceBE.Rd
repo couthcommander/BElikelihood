@@ -2,7 +2,7 @@
 % Please edit documentation in R/proLikelihood.R
 \name{totalVarianceBE}
 \alias{totalVarianceBE}
-\title{Run profile likelihood}
+\title{Calculate profile likelihood for total standard deviation ratio of test to reference drug}
 \usage{
 totalVarianceBE(dat, colSpec = list(), theta = NULL, xlow, xup, xlength)
 }
@@ -13,23 +13,23 @@ totalVarianceBE(dat, colSpec = list(), theta = NULL, xlow, xup, xlength)
 \sQuote{formula}, and \sQuote{y} are required. \sQuote{period} and \sQuote{seq}
 may also be provided. The \sQuote{formula} column should identify treatment with R/T.}
 
-\item{theta}{numeric vector DESCRIBE}
+\item{theta}{numeric vector. See proLikelihood()}
 
-\item{xlow}{numeric value DESCRIBE}
+\item{xlow}{numeric value. See proLikelihood()}
 
-\item{xup}{numeric value DESCRIBE}
+\item{xup}{numeric value. See proLikelihood()}
 
-\item{xlength}{numeric value Defaults to 100; DESCRIBE}
+\item{xlength}{numeric value Defaults to 100; See proLikelihood()}
 }
 \value{
 A \sQuote{proLikelihood} object, with elements \sQuote{poi},
 \sQuote{maxLik}, \sQuote{MAX}, \sQuote{LI}, and \sQuote{method}.
 }
 \description{
-function summary
+This function is equivalent to proLikelihood() with method=\sQuote{total}.
 }
 \details{
-function details
+See proLikelihood()
 }
 \examples{
 \donttest{

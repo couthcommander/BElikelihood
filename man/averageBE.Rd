@@ -2,7 +2,7 @@
 % Please edit documentation in R/proLikelihood.R
 \name{averageBE}
 \alias{averageBE}
-\title{Run profile likelihood}
+\title{Calculate profile likelihood for mean difference}
 \usage{
 averageBE(dat, colSpec = list(), theta = NULL, xlow, xup, xlength)
 }
@@ -13,23 +13,23 @@ averageBE(dat, colSpec = list(), theta = NULL, xlow, xup, xlength)
 \sQuote{formula}, and \sQuote{y} are required. \sQuote{period} and \sQuote{seq}
 may also be provided. The \sQuote{formula} column should identify treatment with R/T.}
 
-\item{theta}{numeric vector DESCRIBE}
+\item{theta}{numeric vector see proLikelihood()}
 
-\item{xlow}{numeric value DESCRIBE}
+\item{xlow}{numeric value see proLikelihood()}
 
-\item{xup}{numeric value DESCRIBE}
+\item{xup}{numeric value see proLikelihood()}
 
-\item{xlength}{numeric value Defaults to 100; DESCRIBE}
+\item{xlength}{numeric value Defaults to 100; see proLikelihood()}
 }
 \value{
 A \sQuote{proLikelihood} object, with elements \sQuote{poi},
-\sQuote{maxLik}, \sQuote{MAX}, \sQuote{LI}, and \sQuote{method}.
+\sQuote{maxLik}, \sQuote{MAX}, \sQuote{LI}, and \sQuote{method}. See proLikelihood().
 }
 \description{
-function summary
+This function is equivalent to proLikelihood() with method=\sQuote{average}.
 }
 \details{
-function details
+See function proLikelihood()
 }
 \examples{
 \donttest{

@@ -1,0 +1,21 @@
+Package: BElikelihood
+Type: Package
+Title: Bioequivalence Likelihood
+Version: 1.0
+Date: 2024-02-21
+Maintainer: Liping Du <liping.du@vumc.org>
+Authors@R:
+    c(person("Liping", "Du", role = c("aut", "cre"),
+             email = "liping.du@vumc.org"),
+    person("Leena", "Choi", role = "aut",
+           email = "leena.choi@vanderbilt.edu",
+           comment = c(ORCID = "0000-0002-2544-7090")),
+    person("Cole", "Beck", role = "aut",
+           email = "cole.beck@vumc.org",
+           comment = c(ORCID = "0000-0002-6849-6255")))
+Description: Add several sentences describing the package.
+License: GPL (>=3)
+Imports: ggplot2, mvtnorm
+Suggests: nlme
+RoxygenNote: 7.2.3
+Depends: R (>= 3.5.0)

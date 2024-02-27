@@ -37,7 +37,6 @@
 #'  \sQuote{total} will provide the profile likelihoods for the total standard deviation ratio of test to reference drug.  \sQuote{within} 
 #'  will provide the profile likelihood for the within subject standard deviation ratio of test to reference drug when appropriate.
 #'
-#' 
 #' @return A \sQuote{proLikelihood} object, with elements \sQuote{poi},
 #' \sQuote{maxLik}, \sQuote{MAX}, \sQuote{LI}, and \sQuote{method}. \sQuote{poi}
 #' and \sQuote{maxLik} are the parameter (mean difference, total standard deviation ratio 

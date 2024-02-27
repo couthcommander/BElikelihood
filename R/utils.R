@@ -79,22 +79,28 @@ validateColumns <- function(df, columnSpecs, defaultSpecs = list()) {
 setup_env <- function(dat, colSpec = list()) {
     dat.req <- list(subject = NA, formula = NA, y = NA, period = NULL, seq = NULL)
     dat.col <- validateColumns(dat, colSpec, dat.req)
-    e <- list2env(list(subject = dat[,colSpec$subject], formula = dat[,colSpec$formula]))
+
+    if('period' %in% names(colSpec)) {
+        # need to reorder by subject|period
+        dat <- dat[order(dat[,colSpec$subject], dat[,colSpec$period]),]
+        e <- list2env(list(subject = dat[,colSpec$subject], formula = dat[,colSpec$formula]))
+        id_rows <- tapply(seq(nrow(dat)), e$subject, I)
+        e$period <- dat[,colSpec$period]
+    } else {
+        e <- list2env(list(subject = dat[,colSpec$subject], formula = dat[,colSpec$formula]))
+        id_rows <- tapply(seq(nrow(dat)), e$subject, I)
+        e$period <- unsplit(lapply(id_rows, seq_along), e$subject)
+    }
     e$Y <- log(dat[,colSpec$y]) ##take log of outcome
 
     ind <- match(e$formula, c('R','T'))
     e$Rind <- c(1,0)[ind]
     e$Tind <- ind-1
-    id_rows <- tapply(seq(nrow(dat)), e$subject, I)
-    if('period' %in% names(colSpec)) {
-        e$period <- dat[,colSpec$period]
-    } else {
-        e$period <- unsplit(lapply(id_rows, seq_along), e$subject)
-    }
+
     TRseq <- vapply(id_rows, function(i) paste(e$Tind[i], collapse = ''), character(1))
     uTRseq <- unname(unique(TRseq))
     genseq <- unsplit(match(TRseq, uTRseq), e$subject)
-    if('seq '%in% names(colSpec)) {
+    if('seq' %in% names(colSpec)) {
         ## this needs a solution
         provseq <- dat[,colSpec$seq]
         if(any(provseq != genseq)) {

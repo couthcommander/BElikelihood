@@ -12,7 +12,7 @@
 \item{\dots}{unused}
 }
 \value{
-Output the mean difference, total standard deviation ratio or within-subject standard deviation ratio values (depending on the \SQuote{method}) with 
+Output the mean difference, total standard deviation ratio or within-subject standard deviation ratio values (depending on the \sQuote{method}) with 
 the calculated corresponding profile likelihood values.
 }
 \description{

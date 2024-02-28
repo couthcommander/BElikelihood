@@ -9,9 +9,10 @@ totalVarianceBE(dat, colSpec = list(), theta = NULL, xlow, xup, xlength)
 \arguments{
 \item{dat}{data.frame}
 
-\item{colSpec}{a named list that should specify columns in data; \sQuote{subject},
-\sQuote{formula}, and \sQuote{y} are required. \sQuote{period} and \sQuote{seq}
-may also be provided. The \sQuote{formula} column should identify treatment with R/T.}
+\item{colSpec}{a named list that should specify columns in data; \sQuote{subject}, 
+\sQuote{formula}, and \sQuote{y} are required. \sQuote{period} and \sQuote{seq} 
+may also be provided. The \sQuote{formula} 
+column should identify either the reference and test drug using R and T, respectively, where other values are not allowed.}
 
 \item{theta}{numeric vector. See proLikelihood()}
 

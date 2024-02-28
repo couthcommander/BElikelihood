@@ -18,34 +18,34 @@
 \item{\dots}{unused}
 }
 \value{
-ggplot2 object,a plot of standardized profile likelihood with the maximum likelihood estimate and 1/8 and 1/32 
-Likelihood intervals printed inside the plot.
+ggplot2 object, a plot of the standardized profile likelihood with the maximum likelihood estimate and 1/8 and 1/32
+likelihood intervals printed inside the plot.
 }
 \description{
-This function generates a plot of standardized profile likelihood after running the proLikelihood() function.
+This function generates a plot of a standardized profile likelihood after running the proLikelihood() function.
 }
 \details{
-The plot is a standardized profile likelihood (profile likelihood relative to the maximum) with the maximum likelihood estimate and 1/8 and 1/32 
-likelihood intervals for the parameter of interest (mean difference, total standard deviation ratio or within-subject standard deviation ratio depending on the \SQuote{method}) 
-printed inside the plot.
+The function generates a plot of the standardized profile likelihood (the profile likelihood relative to the maximum) with
+the maximum likelihood estimate and 1/8 and 1/32 likelihood intervals for the parameter of interest (mean difference, 
+total standard deviation ratio or within-subject standard deviation ratio depending on the \sQuote{method}) printed inside the plot.
 }
 \examples{
 \donttest{
 data(dat)
 cols <- list(subject = 'subject', formula = 'formula', y = 'AUC')
-p4a <- averageBE(dat, colSpec = cols, xlength = 300)
-p4t <- totalVarianceBE(dat, colSpec = cols, xlength = 300)
-p4w <- withinVarianceBE(dat, colSpec = cols, xlength = 300)
+p4a <- averageBE(dat, colSpec = cols, xlength = 50)
+p4t <- totalVarianceBE(dat, colSpec = cols, xlength = 50)
+p4w <- withinVarianceBE(dat, colSpec = cols, xlength = 50)
 plot(p4a)
 plot(p4t)
 plot(p4w)
 # three period case
 dd3 <- dat[dat$period < 4,]
-p3a <- averageBE(dd3, colSpec = cols, xlength = 300)
+p3a <- averageBE(dd3, colSpec = cols, xlength = 50)
 plot(p3a)
 # two period case
 dd2 <- dat[dat$period < 3,]
-p2a <- averageBE(dd2, colSpec = cols, xlength = 300)
+p2a <- averageBE(dd2, colSpec = cols, xlength = 50)
 plot(p2a)
 }
 

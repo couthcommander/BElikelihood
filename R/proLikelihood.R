@@ -205,10 +205,10 @@ proLikelihood <- function(dat, colSpec = list(), theta = NULL, xlow, xup, xlengt
     }
   }
   lik.norm <- maxLik / max(maxLik, na.rm = TRUE)
-  xmax <- x[lik.norm==1]
-  xli4_5 <- range(x[lik.norm >=1/4.5])
-  xli8 <- range(x[lik.norm >=1/8])
-  xli32 <- range(x[lik.norm >=1/32])
+  xmax <- x[which.max(lik.norm)]
+  xli4_5 <- range(x[lik.norm >=1/4.5], na.rm = TRUE)
+  xli8 <- range(x[lik.norm >=1/8], na.rm = TRUE)
+  xli32 <- range(x[lik.norm >=1/32], na.rm = TRUE)
   li <- rbind(xli4_5, xli8, xli32)
   rownames(li) <- c('1/4.5 LI', '1/8 LI', '1/32 LI')
   colnames(li) <- c('lower', 'upper')

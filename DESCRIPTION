@@ -13,7 +13,7 @@ Authors@R:
     person("Cole", "Beck", role = "aut",
            email = "cole.beck@vumc.org",
            comment = c(ORCID = "0000-0002-6849-6255")))
-Description: This package implements a likelihood method for evaluating bioequivalence. The functions use bioequivalence data (AUC and Cmax) from various crossover designs commonly used in BE studies including a fully replicated, a partially replicated design, and a conventional 2x2 crossover design. They will calculate the profile likelihoods for the mean difference, total standard deviation ratio, and within subject standard deviation ratio for a test and a reference drugs. A plot of a standardized profile likelihood can be generated along with the maximum likelihood estimate and likelihood intervals, which present evidence for bioequivalence.
+Description: A likelihood method is implemented to present evidence for evaluating bioequivalence. The functions use bioequivalence data (AUC and Cmax) from various crossover designs commonly used in BE studies including a fully replicated, a partially replicated design, and a conventional 2x2 crossover design. They will calculate the profile likelihoods for the mean difference, total standard deviation ratio, and within subject standard deviation ratio for a test and a reference drugs. A plot of a standardized profile likelihood can be generated along with the maximum likelihood estimate and likelihood intervals, which present evidence for bioequivalence.
 License: GPL (>=3)
 Imports: ggplot2, mvtnorm
 Suggests: 

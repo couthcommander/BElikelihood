@@ -89,6 +89,7 @@ cols <- list(subject = 'subject', formula = 'formula', y = 'AUC')
 p4a <- proLikelihood(dat, colSpec = cols, xlength = 300, method = 'average')
 p4t <- proLikelihood(dat, colSpec = cols, xlength = 300, method = 'total')
 p4w <- proLikelihood(dat, colSpec = cols, xlength = 300, method = 'within')
+# alternatively call method directly
 # p4a <- averageBE(dat, colSpec = cols, xlength = 300)
 # p4t <- totalVarianceBE(dat, colSpec = cols, xlength = 300)
 # p4w <- withinVarianceBE(dat, colSpec = cols, xlength = 300)

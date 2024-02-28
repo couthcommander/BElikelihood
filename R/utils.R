@@ -1,18 +1,20 @@
-#' Internal functions for pk analysis
-#' 
-#' code{design_matrix}: design matrix for given sequence
+#' Internal functions
 #'
-#' code{select_theta}: select good starting values for theta
+#' Internal functions are not intended to be called by user.
 #'
-#' code{setup_env}: create environment with required variables
+#' \code{design_matrix}: design matrix for given sequence
 #'
-#' code{sigma_vals}: calculate sigma values used in varcov matrix
+#' \code{select_theta}: select good starting values for theta
 #'
-#' code{validateColumns}: ensure accurate column specification
+#' \code{setup_env}: create environment with required variables
 #'
-#' code{varcov_matrix}: design varcov matrix
+#' \code{sigma_vals}: calculate sigma values used in varcov matrix
 #'
-#' @name be-internal
+#' \code{validateColumns}: ensure accurate column specification
+#'
+#' \code{varcov_matrix}: design varcov matrix
+#'
+#' @name beInternal
 #' @aliases design_matrix select_theta setup_env
 #' sigma_vals validateColumns varcov_matrix
 #' @keywords internal

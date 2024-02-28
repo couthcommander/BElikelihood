@@ -17,7 +17,9 @@ Description: This package implements a likelihood method for evaluating bioequiv
 License: GPL (>=3)
 Imports: ggplot2, mvtnorm
 Suggests: 
+    knitr,
     nlme,
     rmarkdown
 RoxygenNote: 7.3.1
 Depends: R (>= 3.5.0)
+VignetteBuilder: knitr

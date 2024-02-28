@@ -1,0 +1,11 @@
+---
+output:
+  rmarkdown::pdf_document:
+    extra_dependencies: ["pdfpages"]
+vignette: >
+  %\VignetteIndexEntry{BElikelihood}
+  %\VignettePackage{BElikelihood}
+  %\VignetteEngine{knitr::rmarkdown}
+---
+
+\includepdf[pages=-, fitpaper=true]{precompiled-BElikelihood.pdf}

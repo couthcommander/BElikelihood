@@ -17,10 +17,10 @@ proLikelihood(
 \arguments{
 \item{dat}{data frame contains BE data (AUC and Cmax) with missing data allowed.}
 
-\item{colSpec}{a named list that should specify columns in \sQuote{dat}; \sQuote{subject} (subject ID), \sQuote{formula} (must be 
-coded as T or R, where T for test drug and R for reference drugs), and \sQuote{y} (either AUC or Cmax) are required. If \sQuote{period} 
-is not numerically ordered, \sQuote{period} is also required, but \sQuote{period} and \sQuote{seq} are not generally required. 
-The \sQuote{formula} column should identify a test or a reference drug with R and lT.}
+\item{colSpec}{a named list that should specify columns in \sQuote{dat}; \sQuote{subject} (subject ID),
+\sQuote{formula} (must be coded as T or R, where T for test drug and R for reference drug), and \sQuote{y} (either AUC or Cmax) are
+required. \sQuote{period} and \sQuote{seq} may also be provided.
+The \sQuote{formula} column should identify a test or a reference drug with R and T.}
 
 \item{theta}{An optional numeric vector contains initial values of the parameters for use in optimization.
 For example, in a 2x4 fully replicated design, the vector is [mu, p2, p3, p4, S, phi,log(sbt2), log(sbr2), log(swt2), log(sbr2), rho], where  
@@ -48,18 +48,18 @@ value.}
 \item{method}{character value. Should be one of \sQuote{average}, \sQuote{total}, or \sQuote{within}. 
 \sQuote{average} will provide the profile likelihood for the mean difference between test and reference drugs. 
 \sQuote{total} will provide the profile likelihood for the total standard deviation ratio of test to reference drug. \sQuote{within} 
-will provide the profile likelihood for the within subject standard deviation ratio of test to reference drug when appropriate.}
+will provide the profile likelihood for the within-subject standard deviation ratio of test to reference drug when appropriate.}
 }
 \value{
 A \sQuote{proLikelihood} object, with elements \sQuote{poi}, \sQuote{maxLik}, \sQuote{MAX}, \sQuote{LI}, and \sQuote{method}. 
-\sQuote{poi} and \sQuote{maxLik} are the parameter (mean difference, total standard deviation ratio 
-or within subject standard deviation ratio) values and the corresponding profile likelihood values, respectively. \sQuote{MAX} is the MLE 
+\sQuote{poi} and \sQuote{maxLik} are the interested parameter (mean difference, total standard deviation ratio 
+or within-subject standard deviation ratio) values and the corresponding profile likelihood values, respectively. \sQuote{MAX} is the MLE 
 estimate for that parameter. \sQuote{LI} is the likelihood intervals with the 1/4.5, 1/8 and 1/32 intervals. 
 \sQuote{method} is one of \sQuote{average},\sQuote{total}, and \sQuote{within}.
 }
 \description{
 This is a general function to calculate the profile likelihoods for the mean difference, total standard deviation ratio, 
-and within subject standard deviation ratio of a test to reference drug from bioequivalence (BE) study data. 
+and within-subject standard deviation ratio of the test drug to the reference drug from bioequivalence (BE) study data. 
 Standardized profile likelihood plots with the 1/8 and 1/32 likelihood intervals can be generated using the plot method. 
 The within-subject standard deviation ratio can be obtained only for a fully replicated 2x4 or a partially replicated 2x3 design.
 }

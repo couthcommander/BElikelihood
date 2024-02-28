@@ -1,6 +1,6 @@
 ---
 title: "Likelihood Approach and an R Package BElikelihood"
-author: Liping Lu and Leena Choi
+author: Liping Du and Leena Choi
 output: rmarkdown::pdf_document
 vignette: >
   %\VignetteIndexEntry{BElikelihood}
@@ -27,7 +27,7 @@ The `proLikelihood()` function calculates profile likelihoods for the mean diffe
 ## Example data
 The example dataset is collected from a fully replicated 2x4 crossover design with 2 sequences of RTRT and TRTR, where R and T denote the reference and test drugs, respectively. The data are a subset of Example 4.4 in Chapter 4$^{5}$. This data can be also used as an example dataset for a 2x3 (RTR/TRT) design by specifying `period < 4`, or a 2x2 design by specifying `period < 3`, as shown below.
 
-```{r, echo=T, results='asis'}
+```{r, echo=TRUE, results='asis'}
 ## install package 'BElikelihood' using command below if not installed yet
 # install.packages("BElikelihood")
 
@@ -35,14 +35,14 @@ library(BElikelihood)
 data(dat)
 ```
 
-```{r, echo=F, results='asis'}
+```{r, echo=FALSE, results='asis'}
 knitr::kable(head(dat, 10))
 ```
 
 
 ## Profile likelihood for the mean difference
 
-```{r, echo=T, warning=FALSE, eval=FALSE}
+```{r, echo=TRUE, warning=FALSE}
 cols <- list(subject = 'subject', formula = 'formula', y = 'AUC')
 
 ####### for 2x4 design
@@ -72,7 +72,7 @@ Note that you may get warnings about the optimization when using the function. I
 `proLikelihood()` with method `avarage` is equivalent to `averageBE()` without method. These functions allow missing data and will use all the available data. 
 
 ## Profile likelihood for the total standard deviation ratio
-```{r, echo=T, warning=FALSE, eval=FALSE}
+```{r, echo=TRUE, warning=FALSE}
 
 cols <- list(subject = 'subject', formula = 'formula', y = 'AUC')
 
@@ -81,7 +81,7 @@ p4t <- proLikelihood(dat, colSpec = cols, xlength = 50, method = 'total')
 plot(p4t)
 
 ## this is equivalent to:
-p4t <- totalVarianceBE(dat,xlength=50, colSpec = cols)
+p4t <- totalVarianceBE(dat, xlength = 50, colSpec = cols)
 plot(p4t)
 
 ####### for 2x2 design
@@ -92,16 +92,16 @@ plot(p2t)
 
 ## Profile likelihoods for the within-subject standard deviation ratio
 
-```{r, echo=T, warning=FALSE, eval=FALSE}
+```{r, echo=TRUE, warning=FALSE}
 
 cols <- list(subject = 'subject', formula = 'formula', y = 'AUC')
 
 ####### for 2x4 design
-p4w <- proLikelihood(dat, colSpec = cols, xlength = 300, method = 'within')
+p4w <- proLikelihood(dat, colSpec = cols, xlength = 50, method = 'within')
 plot(p4w)
 
 ## this is equivalent to:
-p4w <- withinVarianceBE(dat,xlength=50, colSpec = cols)
+p4w <- withinVarianceBE(dat, xlength = 50, colSpec = cols)
 plot(p4w)
 
 ####### for 2x3 design

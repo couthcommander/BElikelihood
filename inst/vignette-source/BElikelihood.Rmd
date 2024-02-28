@@ -1,0 +1,129 @@
+---
+title: "Likelihood Approach and an R Package BElikelihood"
+author: Liping Lu and Leena Choi
+output: rmarkdown::pdf_document
+vignette: >
+  %\VignetteIndexEntry{BElikelihood}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+The major utility of an R package `BElikelihood` is to provide the profile likelihoods for presenting evidence to evaluate bioequivalence (BE). It can handle various crossover designs commonly used in BE studies, such as a fully replicated crossover design (e.g., 2x4 two-sequence, four-period, RTRT/TRTR), a partially replicated crossover design (e.g., 2x3, two-sequence, three-period, RTR/TRT), and the conventional two-sequence, two-period, crossover design design (2x2, RT/TR), where "R" stands for a reference drug and "T" stands for a test drug. As long as a 2-sequence design is used, the functions can work with any order of "R" and "T". Additional functions to analyze the BE data using frequentist methods will be added in the near future.
+
+# Introduction
+
+Bioequivalence is required for approval of a generic drug. The two one-sided test (TOST) procedure is recommended by the US Food and Drug Administration (FDA) when evaluating average BE (ABE) on the pharmacokinetic parameters such as the area under the blood concentration-time curve (AUC) and the peak concentration (Cmax). Due to the low power of TOST for highly variable drugs (HVDs) defined by the magnitude of the sample within-subject standard deviation of the reference drug, $s_{WR}$ [e.g., $s_{WR} \geq 0.294$, or equivalently %coefficient of variation (CV) $\geq$ 30%], both the FDA and European Medicines Agency (EMA) recommend similar but not identical reference scaled average bioequivalence (RSABE) approaches for HVDs . Although the power is improved, the new approaches may not guarantee a high level of confidence for the true difference between two drugs at the ABE boundaries. It is also difficult for these approaches to address the differences in the variance between the test and reference drugs. We advocate the use of a likelihood approach for presenting and interpreting BE data as evidence as discussed in Royal (1997)$^{1}$ and Choi *et al.*$^{2}$. In fact, `BElikelihood` package can be used to generate the profile likelihoods for the mean difference and standard deviation ratios of the test and reference drugs for any types of drugs, including HVDs and drugs with narrow therapeutic index (NTI), thus demonstrating evidence for equivalence in both mean and variance$^{3}$, applicable to a wide range of drugs. Note that the pharmacokinetic parameters (AUC and Cmax) are assumed to be logarithmically transformed in the analysis as recommended by the FDA.
+
+# Profile likelihood
+The `proLikelihood()` function calculates profile likelihoods for the mean difference, total standard deviation ratio and within-subject standard deviation ratio of two drugs. The likelihood function is based on a linear mixed-effects model with fixed effects of period, sequence, and formula. The parameter (mean difference called as `average`, total standard deviation ratio called as `total` and within-subject standard deviation ratio called as `within`) values in the range (defined by `xlow` and `xup`) and the corresponding profile likelihood values are the major output of this function. The `xlength` is the number of evenly spaced parameter values in the range, thus determining smoothness of the plot when the profile likelihood is plotted by `plot` function. The `plot` function presents statistical evidence graphically using the profile likelihood standardized by its maximum along with the maximum likelihood estimate (MLE) and likelihood intervals (1/8 and 1/32 as default). The output also provides the 1/4.5*th* likelihood interval (i.e., $k$ = 4.5) that approximately corresponds to the 90% confidence interval (which is operationally equivalent to the TOST). For a general approach for obtaining the profile likelihood from various statistical models, see an R package `ProfileLikelihood`$^{4}$, which also can be used to evaluate ABE.
+
+## Example data
+The example dataset is collected from a fully replicated 2x4 crossover design with 2 sequences of RTRT and TRTR, where R and T denote the reference and test drugs, respectively. The data are a subset of Example 4.4 in Chapter 4$^{5}$. This data can be also used as an example dataset for a 2x3 (RTR/TRT) design by specifying `period < 4`, or a 2x2 design by specifying `period < 3`, as shown below.
+
+```{r, echo=T, results='asis'}
+## install package 'BElikelihood' using command below if not installed yet
+# install.packages("BElikelihood")
+
+library(BElikelihood)
+data(dat)
+```
+
+```{r, echo=F, results='asis'}
+knitr::kable(head(dat, 10))
+```
+
+
+## Profile likelihood for the mean difference
+
+```{r, echo=T, warning=FALSE, eval=FALSE}
+cols <- list(subject = 'subject', formula = 'formula', y = 'AUC')
+
+####### for 2x4 design
+p4a <- proLikelihood(dat, colSpec = cols, xlength = 50, method = 'average')
+plot(p4a)
+
+## this is equivalent to
+p4a <- averageBE(dat, colSpec = cols, xlength = 50)
+plot(p4a)
+
+## get values for likelihood intervals: k = 4.5, 8, 32
+p4a$LI
+
+###### for 2x3 design
+dd3 <- dat[dat$period < 4,]
+p3a <- proLikelihood(dd3, colSpec = cols, xlength = 50, method = 'average')
+plot(p3a)
+
+###### for 2x2 design
+dd2 <- dat[dat$period < 3,]
+p2a <- proLikelihood(dd2, colSpec = cols, xlength = 50, method = 'average')
+plot(p2a)
+```
+
+Note that you may get warnings about the optimization when using the function. If the optimization fails for a critical range of parameters, consider providing better initials using `theta` (an optional argument) which is a vector of initial values of the parameters for use in the optimization. For example, for 2x4 design, they are `mu`, `p2`, `p3`, `p4`, `S`, `phi`, `log(sbt2)`, `log(sbr2)`, `log(swt2)`, `log(sbr2)`, and `rho`, where `mu` is the population mean for the reference drug when there are no period or sequence effects; `p2` to `p4` are fixed period effects with period 1 as the reference period; `S` is the fixed sequence effect with seq 1 as the reference sequence; `phi` is the mean difference between the two drugs; `sbt2` and `sbr2` are between-subject variances for the test and reference drugs, respectively; `swt2` and `swr2` are within-subject variances for the test and reference drugs, respectively; `rho` is the correlation coefficient within a subject. When `theta=NULL` (default), the function will choose the starting values automatically based on a linear mixed-effects model. If the user wants to provide these values, for method `avarage`, user may put any value for `phi`. Similarly, for method `total`, user can put any value for `log(sbt2)`, and for `within`, user can put any value for `log(swt2)`.
+
+`proLikelihood()` with method `avarage` is equivalent to `averageBE()` without method. These functions allow missing data and will use all the available data. 
+
+## Profile likelihood for the total standard deviation ratio
+```{r, echo=T, warning=FALSE, eval=FALSE}
+
+cols <- list(subject = 'subject', formula = 'formula', y = 'AUC')
+
+####### for 2x4 design
+p4t <- proLikelihood(dat, colSpec = cols, xlength = 50, method = 'total')
+plot(p4t)
+
+## this is equivalent to:
+p4t <- totalVarianceBE(dat,xlength=50, colSpec = cols)
+plot(p4t)
+
+####### for 2x2 design
+p2t <- proLikelihood(dd2, colSpec = cols, xlength = 50, method = 'total')
+plot(p2t)
+```
+
+
+## Profile likelihoods for the within-subject standard deviation ratio
+
+```{r, echo=T, warning=FALSE, eval=FALSE}
+
+cols <- list(subject = 'subject', formula = 'formula', y = 'AUC')
+
+####### for 2x4 design
+p4w <- proLikelihood(dat, colSpec = cols, xlength = 300, method = 'within')
+plot(p4w)
+
+## this is equivalent to:
+p4w <- withinVarianceBE(dat,xlength=50, colSpec = cols)
+plot(p4w)
+
+####### for 2x3 design
+p3w <- proLikelihood(dd3, colSpec = cols, xlength = 50, method = 'within')
+plot(p3w)
+```
+
+The x-axis range in these plots is controlled by `xlow` and `xup`, which are automatically provided if not provided. However, we strongly recommend using a better range of values that would better fit for purpose. The dashed vertical lines represent the ABE limits (for the mean difference), or some recommended limits (e.g., 2.5 is recommended by the FDA for within-subject standard deviation ratios). Users can make their own plot using the output of `proLikelihood` which provides the profile likelihood along with the parameter values.
+
+The standardized profile likelihood plots present the evidence provided by the data for the parameter of interest. For the BE data analysis, this likelihood approach can provide evidence for the mean and variance in a unified framework. 
+
+# References
+
+1. Royall RM (1997). Statistical Evidence: A Likelihood Paradigm. Chapman & Hall/CRC.
+
+2. Choi L, Caffo B, Rohde C. A survey of the likelihood approach to bioequivalence trials. Statistics in Medicine 2008; 27(24): 4874–4894.
+
+3. Du L and Choi L. Likelihood approach for evaluating bioequivalence of highly variable drugs, Pharmaceutical Statistics 2015; 14(2): 82-94.
+
+4. Choi L (2023). `ProfileLikelihood`: Profile Likelihood for a Parameter in Commonly Used Statistical
+  Models_. R package version 1.3, <https://CRAN.R-project.org/package=ProfileLikelihood>.
+
+5. Patterson S and Jones B (2023). Bioequivalence and Statistics in Clinical Pharmacology. Chapman Hall/CRC Press.
+
+

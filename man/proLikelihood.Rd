@@ -2,6 +2,9 @@
 % Please edit documentation in R/proLikelihood.R
 \name{proLikelihood}
 \alias{proLikelihood}
+\alias{averageBE}
+\alias{totalVarianceBE}
+\alias{withinVarianceBE}
 \title{Calculate profile likelihood for bioequivalence data}
 \usage{
 proLikelihood(
@@ -13,6 +16,12 @@ proLikelihood(
   xlength = 100,
   method
 )
+
+averageBE(dat, colSpec = list(), theta = NULL, xlow, xup, xlength)
+
+totalVarianceBE(dat, colSpec = list(), theta = NULL, xlow, xup, xlength)
+
+withinVarianceBE(dat, colSpec = list(), theta = NULL, xlow, xup, xlength)
 }
 \arguments{
 \item{dat}{data frame contains BE data (AUC and Cmax) with missing data allowed.}
@@ -80,6 +89,9 @@ cols <- list(subject = 'subject', formula = 'formula', y = 'AUC')
 p4a <- proLikelihood(dat, colSpec = cols, xlength = 300, method = 'average')
 p4t <- proLikelihood(dat, colSpec = cols, xlength = 300, method = 'total')
 p4w <- proLikelihood(dat, colSpec = cols, xlength = 300, method = 'within')
+# p4a <- averageBE(dat, colSpec = cols, xlength = 300)
+# p4t <- totalVarianceBE(dat, colSpec = cols, xlength = 300)
+# p4w <- withinVarianceBE(dat, colSpec = cols, xlength = 300)
 # three period case
 dd3 <- dat[dat$period < 4,]
 p3a <- proLikelihood(dd3, colSpec = cols, xlength = 300, method = 'average')

@@ -12,7 +12,7 @@
 #' It allows missing data (for example, a subject may miss the period 2 data) and utilizes all available data. It will 
 #' calculate the profile likelihoods for the mean difference, total standard deviation ratio, and within-subject standard deviation ratio. 
 #' Plots of standardized profile likelihood can be generated and provide evidence for various quantities of interest for evaluating 
-#' BE in a unified framework. 
+#' BE in a unified framework.
 #' 
 #' @param dat data frame contains BE data (AUC and Cmax) with missing data allowed.
 #' @param colSpec a named list that should specify columns in \sQuote{dat}; \sQuote{subject} (subject ID),
@@ -42,7 +42,6 @@
 #' \sQuote{average} will provide the profile likelihood for the mean difference between test and reference drugs. 
 #' \sQuote{total} will provide the profile likelihood for the total standard deviation ratio of test to reference drug. \sQuote{within} 
 #' will provide the profile likelihood for the within-subject standard deviation ratio of test to reference drug when appropriate. 
-#'
 #' 
 #' @return A \sQuote{proLikelihood} object, with elements \sQuote{poi}, \sQuote{maxLik}, \sQuote{MAX}, \sQuote{LI}, and \sQuote{method}. 
 #' \sQuote{poi} and \sQuote{maxLik} are the interested parameter (mean difference, total standard deviation ratio 
@@ -59,6 +58,10 @@
 #' p4a <- proLikelihood(dat, colSpec = cols, xlength = 300, method = 'average')
 #' p4t <- proLikelihood(dat, colSpec = cols, xlength = 300, method = 'total')
 #' p4w <- proLikelihood(dat, colSpec = cols, xlength = 300, method = 'within')
+#' # alternatively call method directly
+#' # p4a <- averageBE(dat, colSpec = cols, xlength = 300)
+#' # p4t <- totalVarianceBE(dat, colSpec = cols, xlength = 300)
+#' # p4w <- withinVarianceBE(dat, colSpec = cols, xlength = 300)
 #' # three period case
 #' dd3 <- dat[dat$period < 4,]
 #' p3a <- proLikelihood(dd3, colSpec = cols, xlength = 300, method = 'average')
@@ -224,96 +227,21 @@ proLikelihood <- function(dat, colSpec = list(), theta = NULL, xlow, xup, xlengt
   obj
 }
 
-#' Calculate profile likelihood for mean difference
-#'
-#' This function is equivalent to proLikelihood() with method=\sQuote{average}. 
-#' 
-#' See function proLikelihood()
-#'
-#' @param dat data.frame
-#' @param colSpec a named list that should specify columns in data; \sQuote{subject}, 
-#' \sQuote{formula}, and \sQuote{y} are required. \sQuote{period} and \sQuote{seq} 
-#' may also be provided. The \sQuote{formula} 
-#' column should identify either the reference and test drug using R and T, respectively, where other values are not allowed. 
-#' @param theta numeric vector see proLikelihood()
-#' @param xlow numeric value see proLikelihood()
-#' @param xup numeric value see proLikelihood()
-#' @param xlength numeric value Defaults to 100; see proLikelihood()
-#'
-#' @return A \sQuote{proLikelihood} object, with elements \sQuote{poi},
-#' \sQuote{maxLik}, \sQuote{MAX}, \sQuote{LI}, and \sQuote{method}. See proLikelihood().
-#'
-#' @examples
-#' \donttest{
-#' data(dat)
-#' cols <- list(subject = 'subject', formula = 'formula', y = 'AUC')
-#' l <- averageBE(dat, colSpec = cols, xlength = 300)
-#' }
-#'
+#' @rdname proLikelihood
 #' @export
 
 averageBE <- function(dat, colSpec = list(), theta = NULL, xlow, xup, xlength) {
   proLikelihood(dat, colSpec, theta, xlow, xup, xlength, 'average')
 }
 
-#' Calculate profile likelihood for total standard deviation ratio of test to reference drug
-#'
-#' This function is equivalent to proLikelihood() with method=\sQuote{total}. 
-#'
-#' See proLikelihood()
-#'
-#' @param dat data.frame
-#' @param colSpec a named list that should specify columns in data; \sQuote{subject}, 
-#' \sQuote{formula}, and \sQuote{y} are required. \sQuote{period} and \sQuote{seq} 
-#' may also be provided. The \sQuote{formula} 
-#' column should identify either the reference and test drug using R and T, respectively, where other values are not allowed. 
-#' @param theta numeric vector. See proLikelihood()
-#' @param xlow numeric value. See proLikelihood()
-#' @param xup numeric value. See proLikelihood()
-#' @param xlength numeric value Defaults to 100; See proLikelihood()
-#'
-#' @return A \sQuote{proLikelihood} object, with elements \sQuote{poi},
-#' \sQuote{maxLik}, \sQuote{MAX}, \sQuote{LI}, and \sQuote{method}.
-#'
-#' @examples
-#' \donttest{
-#' data(dat)
-#' cols <- list(subject = 'subject', formula = 'formula', y = 'AUC')
-#' tv <- totalVarianceBE(dat, colSpec = cols, xlength = 300)
-#' }
-#'
+#' @rdname proLikelihood
 #' @export
 
 totalVarianceBE <- function(dat, colSpec = list(), theta = NULL, xlow, xup, xlength) {
   proLikelihood(dat, colSpec, theta, xlow, xup, xlength, 'total')
 }
 
-#' Calculate profile likelihood for within-subject standard deviation ratio of test to reference drug
-#'
-#' This function is equivalent to proLikelihood() with method=\sQuote{within}.
-#'
-#' see proLikelihood()
-#'
-#' @param dat data.frame
-#' @param colSpec a named list that should specify columns in data; \sQuote{subject}, 
-#' \sQuote{formula}, and \sQuote{y} are required. \sQuote{period} and \sQuote{seq} 
-#' may also be provided. The \sQuote{formula} 
-#' column should identify either the reference and test drug using R and T, respectively, where other values are not allowed. 
-#' @param theta numeric vector. See proLikelihood()
-#' @param xlow numeric value. See proLikelihood()
-#' @param xup numeric value. See proLikelihood()
-#' @param xlength numeric value Defaults to 100. See proLikelihood()
-#'
-#' @return A \sQuote{proLikelihood} object, with elements \sQuote{poi},
-#' \sQuote{maxLik}, \sQuote{MAX}, \sQuote{LI}, and \sQuote{method}. See proLikelihood()
-#'
-#' @examples
-#' \donttest{
-#' data(dat)
-#' cols <- list(subject = 'subject', formula = 'formula', y = 'AUC')
-#' wv <- withinVarianceBE(dat, colSpec = cols, xlength = 300)
-#' }
-#'
+#' @rdname proLikelihood
 #' @export
 
 withinVarianceBE <- function(dat, colSpec = list(), theta = NULL, xlow, xup, xlength) {

@@ -46,11 +46,11 @@ knitr::kable(head(dat, 10))
 cols <- list(subject = 'subject', formula = 'formula', y = 'AUC')
 
 ####### for 2x4 design
-p4a <- proLikelihood(dat, colSpec = cols, xlength = 50, method = 'average')
+p4a <- proLikelihood(dat, colSpec = cols, xlength = 200, method = 'average')
 plot(p4a)
 
 ## this is equivalent to
-p4a <- averageBE(dat, colSpec = cols, xlength = 50)
+p4a <- averageBE(dat, colSpec = cols, xlength = 200)
 plot(p4a)
 
 ## get values for likelihood intervals: k = 4.5, 8, 32
@@ -58,12 +58,12 @@ p4a$LI
 
 ###### for 2x3 design
 dd3 <- dat[dat$period < 4,]
-p3a <- proLikelihood(dd3, colSpec = cols, xlength = 50, method = 'average')
+p3a <- proLikelihood(dd3, colSpec = cols, xlength = 200, method = 'average')
 plot(p3a)
 
 ###### for 2x2 design
 dd2 <- dat[dat$period < 3,]
-p2a <- proLikelihood(dd2, colSpec = cols, xlength = 50, method = 'average')
+p2a <- proLikelihood(dd2, colSpec = cols, xlength = 200, method = 'average')
 plot(p2a)
 ```
 
@@ -77,15 +77,15 @@ Note that you may get warnings about the optimization when using the function. I
 cols <- list(subject = 'subject', formula = 'formula', y = 'AUC')
 
 ####### for 2x4 design
-p4t <- proLikelihood(dat, colSpec = cols, xlength = 50, method = 'total')
+p4t <- proLikelihood(dat, colSpec = cols, xlength = 200, method = 'total')
 plot(p4t)
 
 ## this is equivalent to:
-p4t <- totalVarianceBE(dat, xlength = 50, colSpec = cols)
+p4t <- totalVarianceBE(dat, xlength = 200, colSpec = cols)
 plot(p4t)
 
 ####### for 2x2 design
-p2t <- proLikelihood(dd2, colSpec = cols, xlength = 50, method = 'total')
+p2t <- proLikelihood(dd2, colSpec = cols, xlow = 0.5, xup = 1.5, xlength = 200, method = 'total')
 plot(p2t)
 ```
 
@@ -97,15 +97,15 @@ plot(p2t)
 cols <- list(subject = 'subject', formula = 'formula', y = 'AUC')
 
 ####### for 2x4 design
-p4w <- proLikelihood(dat, colSpec = cols, xlength = 50, method = 'within')
+p4w <- proLikelihood(dat, colSpec = cols, xlength = 200, method = 'within')
 plot(p4w)
 
 ## this is equivalent to:
-p4w <- withinVarianceBE(dat, xlength = 50, colSpec = cols)
+p4w <- withinVarianceBE(dat, xlength = 200, colSpec = cols)
 plot(p4w)
 
 ####### for 2x3 design
-p3w <- proLikelihood(dd3, colSpec = cols, xlength = 50, method = 'within')
+p3w <- proLikelihood(dd3, colSpec = cols, xlow = 0.35, xup = 1.8, xlength = 200, method = 'within')
 plot(p3w)
 ```
 
@@ -125,5 +125,3 @@ The standardized profile likelihood plots present the evidence provided by the d
   Models_. R package version 1.3, <https://CRAN.R-project.org/package=ProfileLikelihood>.
 
 5. Patterson S and Jones B (2023). Bioequivalence and Statistics in Clinical Pharmacology. Chapman Hall/CRC Press.
-
-

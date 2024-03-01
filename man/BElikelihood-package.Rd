@@ -11,11 +11,11 @@ to a reference drug for AUC or Cmax from various crossover designs commonly used
 design (e.g., 2x4 two-sequence, four-period, RTRT/TRTR), a partially replicated crossover design (e.g., 2x3, two-sequence, three-period, RTR/TRT), and a two-sequence, two-period, crossover design design (2x2, RT/TR), where "R" stands for a reference drug and "T" stands for a test drug.
 }
 \author{
-\strong{Maintainer}: Liping Du \email{liping.du@vumc.org}
+\strong{Maintainer}: Liping Du \email{liping.du@vumc.org} (\href{https://orcid.org/0000-0003-4926-2135}{ORCID})
 
 Authors:
 \itemize{
-  \item Leena Choi \email{leena.choi@vanderbilt.edu} (\href{https://orcid.org/0000-0002-2544-7090}{ORCID})
+  \item Leena Choi \email{naturechoi@gmail.com} (\href{https://orcid.org/0000-0002-2544-7090}{ORCID})
   \item Cole Beck \email{cole.beck@vumc.org} (\href{https://orcid.org/0000-0002-6849-6255}{ORCID})
 }
 

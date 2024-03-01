@@ -1,25 +1,27 @@
 Package: BElikelihood
 Type: Package
 Title: Likelihood Method for Evaluating Bioequivalence
-Version: 1.0
-Date: 2024-02-21
+Version: 1.1
+Date: 2024-02-29
 Maintainer: Liping Du <liping.du@vumc.org>
 Authors@R:
     c(person("Liping", "Du", role = c("aut", "cre"),
-             email = "liping.du@vumc.org"),
+             email = "liping.du@vumc.org",
+             comment=c(ORCID = "0000-0003-4926-2135")),
     person("Leena", "Choi", role = "aut",
-           email = "leena.choi@vanderbilt.edu",
+           email = "naturechoi@gmail.com",
            comment = c(ORCID = "0000-0002-2544-7090")),
     person("Cole", "Beck", role = "aut",
            email = "cole.beck@vumc.org",
            comment = c(ORCID = "0000-0002-6849-6255")))
-Description: A likelihood method is implemented to present evidence for evaluating bioequivalence. The functions use bioequivalence data (AUC and Cmax) from various crossover designs commonly used in BE studies including a fully replicated, a partially replicated design, and a conventional 2x2 crossover design. They will calculate the profile likelihoods for the mean difference, total standard deviation ratio, and within subject standard deviation ratio for a test and a reference drugs. A plot of a standardized profile likelihood can be generated along with the maximum likelihood estimate and likelihood intervals, which present evidence for bioequivalence.
+Description: A likelihood method is implemented to present evidence for evaluating bioequivalence (BE). The functions use bioequivalence data [area under the blood concentration-time curve (AUC) and peak concentration (Cmax)] from various crossover designs commonly used in BE studies including a fully replicated, a partially replicated design, and a conventional 2x2 crossover design. They will calculate the profile likelihoods for the mean difference, total standard deviation ratio, and within subject standard deviation ratio for a test and a reference drug. A plot of a standardized profile likelihood can be generated along with the maximum likelihood estimate and likelihood intervals, which present evidence for bioequivalence. See Liping Du and Leena Choi (2015) <doi:10.1002/pst.1661>.
 License: GPL (>=3)
 Imports: ggplot2, mvtnorm
-Suggests: 
+Suggests:
     knitr,
     nlme,
     rmarkdown
 RoxygenNote: 7.3.1
 Depends: R (>= 3.5.0)
 VignetteBuilder: knitr
+

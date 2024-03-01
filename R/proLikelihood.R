@@ -58,19 +58,15 @@
 #' p4a <- proLikelihood(dat, colSpec = cols, xlength = 300, method = 'average')
 #' p4t <- proLikelihood(dat, colSpec = cols, xlength = 300, method = 'total')
 #' p4w <- proLikelihood(dat, colSpec = cols, xlength = 300, method = 'within')
-#' # alternatively call method directly
-#' # p4a <- averageBE(dat, colSpec = cols, xlength = 300)
-#' # p4t <- totalVarianceBE(dat, colSpec = cols, xlength = 300)
-#' # p4w <- withinVarianceBE(dat, colSpec = cols, xlength = 300)
 #' # three period case
 #' dd3 <- dat[dat$period < 4,]
-#' p3a <- proLikelihood(dd3, colSpec = cols, xlength = 300, method = 'average')
-#' p3t <- proLikelihood(dd3, colSpec = cols, xlength = 300, method = 'total')
-#' p3w <- proLikelihood(dd3, colSpec = cols, xlength = 300, method = 'within')
+#' p3a <- averageBE(dd3, colSpec = cols, xlength = 300)
+#' p3t <- totalVarianceBE(dd3, colSpec = cols, xlength = 300)
+#' p3w <- withinVarianceBE(dd3, colSpec = cols, xlength = 300)
 #' # two period case
 #' dd2 <- dat[dat$period < 3,]
-#' p2a <- proLikelihood(dd2, colSpec = cols, xlength = 300, method = 'average')
-#' p2t <- proLikelihood(dd2, colSpec = cols, xlength = 300, method = 'total')
+#' p2a <- averageBE(dd2, colSpec = cols, xlength = 300)
+#' p2t <- totalVarianceBE(dd2, colSpec = cols, xlength = 300)
 #' }
 #'
 #' @export

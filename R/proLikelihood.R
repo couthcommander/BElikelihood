@@ -125,28 +125,52 @@ proLikelihood <- function(dat, colSpec = list(), theta = NULL, xlow, xup, xlengt
   })
   names(X) <- TRname
 
-  s1xy <- lapply(seq(n1), function(i) {
+  # save y values and missing position within seq1
+  l_y <- vector('list', n1)
+  l_m1 <- vector('list', n1)
+  for(i in seq(n1)) {
     yi <- e$Y[e$subject==subject1[i]]
     miss.pos <- which(is.na(yi)) # missing position
+    l_m1[[i]] <- miss.pos
     if(length(miss.pos) > 0){
       yi <- yi[-miss.pos]
-      X.m <- X[[1]][-miss.pos,]
-    } else{
-      X.m <- X[[1]]
     }
-    list(yi, miss.pos, X.m)
-  })
-  s2xy <- lapply(seq(n2), function(i) {
+    l_y[[i]] <- yi
+  }
+  m_y1 <- unlist(l_y)
+
+  # save y values and missing position within seq2
+  l_y <- vector('list', n1)
+  l_m2 <- vector('list', n1)
+  for(i in seq(n2)) {
     yi <- e$Y[e$subject==subject2[i]]
     miss.pos <- which(is.na(yi)) # missing position
+    l_m2[[i]] <- miss.pos
     if(length(miss.pos) > 0){
       yi <- yi[-miss.pos]
-      X.m <- X[[2]][-miss.pos,]
-    } else{
-      X.m <- X[[2]]
     }
-    list(yi, miss.pos, X.m)
-  })
+    l_y[[i]] <- yi
+  }
+  m_y2 <- unlist(l_y)
+  # convert vector to matrix with one row
+  mm_y1 <- matrix(m_y1)
+  mm_y2 <- matrix(m_y2)
+  # used in density function
+  thing1 <- 0.5 * length(m_y1) * log(2 * pi)
+  thing2 <- 0.5 * length(m_y2) * log(2 * pi)
+
+  # size is number of periods X number of people
+  # remove all missing values from this calculation
+  v1size <- nPeriods * n1 - sum(vapply(l_m1, length, numeric(1)))
+  v2size <- nPeriods * n2 - sum(vapply(l_m2, length, numeric(1)))
+  # md_v12 will hold "sigma"
+  md_v1 <- matrix(0, v1size, v1size)
+  md_v2 <- matrix(0, v2size, v2size)
+  # md_x12/m_x12 will hold design matrix
+  md_x1 <- matrix(0, v1size, nPeriods + 2)
+  md_x2 <- matrix(0, v2size, nPeriods + 2)
+  m_x1 <- matrix_stuff_rows(md_x1, X[[1]], l_m1)
+  m_x2 <- matrix_stuff_rows(md_x2, X[[2]], l_m2)
 
   # use TRname to generalize var-cov matrix
   varcov_blueprint <- lapply(TRname, varcov_matrix)
@@ -163,36 +187,24 @@ proLikelihood <- function(dat, colSpec = list(), theta = NULL, xlow, xup, xlengt
       matrix(s_vals[i], nPeriods, nPeriods)
     })
 
-    l <- 0 ##variable for the sum of negative log likelihood##
+    # start with empty matrix and rebuild along diagonal
+    m_v1 <- matrix_stuff(md_v1, vmat[[1]], l_m1)
+    m_v2 <- matrix_stuff(md_v2, vmat[[2]], l_m2)
 
-    for (i in seq(n1)){
-      s_i <- s1xy[[i]]
-      yi <- s_i[[1]]
-      miss.pos <- s_i[[2]]
-      Xi1.m <- s_i[[3]]
-      if(length(miss.pos) > 0) {
-        vi1.m <- vmat[[1]][-miss.pos, -miss.pos, drop = FALSE]
-      } else {
-        vi1.m <- vmat[[1]]
-      }
-      y.pred1 <- Xi1.m %*% beta
-      l <- l - mvtnorm::dmvnorm(yi, mean=y.pred1, sigma=vi1.m, log=TRUE, checkSymmetry = FALSE)
-    } ## sum of negative log likelihood for subjects in seq 1
+    y.pred1 <- m_x1 %*% beta
+    y.pred2 <- m_x2 %*% beta
 
-    for(i in seq(n2)){
-      s_i <- s2xy[[i]]
-      yi <- s_i[[1]]
-      miss.pos <- s_i[[2]]
-      Xi2.m <- s_i[[3]]
-      if(length(miss.pos) > 0) {
-        vi2.m <- vmat[[2]][-miss.pos, -miss.pos, drop = FALSE]
-      } else {
-        vi2.m <- vmat[[2]]
-      }
-      y.pred2 <- Xi2.m %*% beta
-      l <- l - mvtnorm::dmvnorm(yi, mean=y.pred2, sigma=vi2.m, log=TRUE, checkSymmetry = FALSE)
-    } ## sum of log likelihood for subjects in seq 2
-    return(l)
+    # sum of negative log likelihood for subjects in seq 1/2
+    # custom function replaces `mvtnorm::dmvnorm`
+    # returns -Inf if "Cholesky Decomposition" fails
+    l_seq1 <- be_dmvnorm(mm_y1, mean = y.pred1, sigma = m_v1, thing = thing1)
+    if(is.infinite(l_seq1)) {
+      # if seq1 is infinite, don't bother
+      l_seq2 <- 0
+    } else {
+      l_seq2 <- be_dmvnorm(mm_y2, mean = y.pred2, sigma = m_v2, thing = thing2)
+    }
+    -1 * (l_seq1 + l_seq2)
   }
 
   #################get the profilelikelihood################

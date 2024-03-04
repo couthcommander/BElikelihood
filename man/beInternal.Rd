@@ -8,6 +8,9 @@
 \alias{sigma_vals}
 \alias{validateColumns}
 \alias{varcov_matrix}
+\alias{be_dmvnorm}
+\alias{matrix_stuff_rows}
+\alias{matrix_stuff}
 \title{Internal functions}
 \description{
 Internal functions are not intended to be called by user.
@@ -24,5 +27,11 @@ Internal functions are not intended to be called by user.
 \code{validateColumns}: ensure accurate column specification
 
 \code{varcov_matrix}: design varcov matrix
+
+\code{be_dmvnorm}: density function for multivariate normal distribution
+
+\code{matrix_stuff_rows}: combine chunks of data along matrix rows
+
+\code{matrix_stuff}: combine chunks of data along matrix diagonal
 }
 \keyword{internal}

@@ -6,7 +6,6 @@
 #'
 #' @docType package
 #'
-#' @importFrom mvtnorm dmvnorm
 #' @importFrom stats as.formula na.exclude nlm
 #' @import ggplot2
 "_PACKAGE"

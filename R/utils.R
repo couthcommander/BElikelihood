@@ -14,9 +14,16 @@
 #'
 #' \code{varcov_matrix}: design varcov matrix
 #'
+#' \code{be_dmvnorm}: density function for multivariate normal distribution
+#'
+#' \code{matrix_stuff_rows}: combine chunks of data along matrix rows
+#'
+#' \code{matrix_stuff}: combine chunks of data along matrix diagonal
+#'
 #' @name beInternal
 #' @aliases design_matrix select_theta setup_env
 #' sigma_vals validateColumns varcov_matrix
+#' be_dmvnorm matrix_stuff_rows matrix_stuff
 #' @keywords internal
 NULL
 
@@ -211,4 +218,53 @@ varcov_matrix <- function(x) {
     mmm[upper.tri(mmm)] <- j3
     mmm[lower.tri(mmm)] <- j3
     mmm
+}
+
+# this is a simplification of `mvtnorm::dmvnorm`
+# credit should go to Torsten Hothorn et al.
+be_dmvnorm <- function(y, mean, sigma, thing) {
+  yd <- y - mean
+  dec <- tryCatch(chol.default(sigma), error = function(e) e)
+  if(inherits(dec, "error")) {
+    x.is.mu <- all(abs(yd) < 1e-8)
+    out <- c(-Inf, Inf)[x.is.mu + 1]
+  } else {
+    rss <- sum(backsolve(dec, yd, transpose = TRUE)^2)
+    out <- -sum(log(diag(dec))) - thing - 0.5 * rss
+  }
+  out
+}
+
+matrix_stuff_rows <- function(blank_mat, stuffing, missing) {
+  ii <- 1
+  for(i in seq_along(missing)) {
+    miss.pos <- missing[[i]]
+    if(length(miss.pos) > 0) {
+      stuff <- stuffing[-miss.pos,, drop = FALSE]
+    } else {
+      stuff <- stuffing
+    }
+    i_size <- nrow(stuff)
+    ix <- seq.int(ii, length.out = i_size)
+    ii <- ii + i_size
+    blank_mat[ix,] <- stuff
+  }
+  blank_mat
+}
+
+matrix_stuff <- function(blank_mat, stuffing, missing) {
+  ii <- 1
+  for(i in seq_along(missing)) {
+    miss.pos <- missing[[i]]
+    if(length(miss.pos) > 0) {
+      stuff <- stuffing[-miss.pos, -miss.pos, drop = FALSE]
+    } else {
+      stuff <- stuffing
+    }
+    i_size <- nrow(stuff)
+    ix <- seq.int(ii, length.out = i_size)
+    ii <- ii + i_size
+    blank_mat[ix,ix] <- stuff
+  }
+  blank_mat
 }
